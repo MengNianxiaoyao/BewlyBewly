@@ -6,9 +6,9 @@ import { useI18n } from 'vue-i18n'
 import { getCSRF, openLinkToNewTab, removeHttpFromUrl } from '~/utils/main'
 import { calcCurrentTime } from '~/utils/dataFormatter'
 import emitter from '~/utils/mitt'
-import { Business } from '~/models/apiModels/video/history'
-import type { List as HistoryItem, HistoryResult } from '~/models/apiModels/video/history'
-import type { List as HistorySearchItem, HistorySearchResult } from '~/models/apiModels/video/historySearch'
+import { Business } from '~/models/video/history'
+import type { List as HistoryItem, HistoryResult } from '~/models/video/history'
+import type { List as HistorySearchItem, HistorySearchResult } from '~/models/video/historySearch'
 
 const { t } = useI18n()
 
@@ -117,7 +117,7 @@ function searchHistoryList() {
         }
 
         res.data.list.forEach((item: HistorySearchItem) => {
-          historyList.push(item as HistoryItem)
+          historyList.push(item as unknown as HistoryItem)
         })
 
         noMoreContent.value = false
@@ -154,22 +154,30 @@ function deleteHistoryItem(index: number, historyItem: HistoryItem) {
  */
 function getHistoryUrl(item: HistoryItem) {
   // anime
-  if (item.history.business === 'pgc')
+  if (item.history.business === 'pgc') {
     return removeHttpFromUrl(item.uri)
+  }
   // video
-  else if (item.history.business === 'archive')
+  else if (item.history.business === 'archive') {
     return removeHttpFromUrl(item.history.bvid)
-  else if (item.history.business === 'live')
+  }
+  else if (item.history.business === 'live') {
     return `//live.bilibili.com/${item.history.oid}`
-  else if (item.history.business === 'article')
-    return `//www.bilibili.com/read/cv${item.history.oid}`
-
+  }
+  else if (item.history.business === 'article') {
+    if (item.history.cid === 0)
+      return `//www.bilibili.com/read/cv${item.history.oid}`
+    else
+      return `//www.bilibili.com/read/cv${item.history.cid}`
+  }
   return ''
 }
 
 function getHistoryItemCover(item: HistoryItem) {
-  if (item.history.business === 'article')
-    return removeHttpFromUrl(`${item.covers[0]}`)
+  if (item.history.business === 'article') {
+    if (item.covers)
+      return removeHttpFromUrl(`${item.covers[0]}`)
+  }
 
   return removeHttpFromUrl(item.cover)
 }
@@ -341,13 +349,6 @@ function jumpToLoginPage() {
                   v-if="historyItem.history.business === HistoryBusiness.LIVE"
                 >
                   Livestreaming
-                </template>
-                <template
-                  v-else-if="
-                    historyItem.history.business === HistoryBusiness.ARCHIVE
-                  "
-                >
-                  Article
                 </template>
                 <template
                   v-else-if="historyItem.history.business === HistoryBusiness.PGC"
