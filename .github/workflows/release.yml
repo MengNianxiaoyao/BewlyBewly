@@ -25,8 +25,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-        contents: write
-        pull-requests: write
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
@@ -51,9 +51,9 @@ jobs:
           release-type: node
           package-name: release-please-action
           release-as: 0.13.0
-          signoff: "github-actions <41898282+github-actions[bot]@users.noreply.github.com>"
+          signoff: 'github-actions <41898282+github-actions[bot]@users.noreply.github.com>'
           changelog-types: '[{"type":"types","section":"Types","hidden":false},{"type":"revert","section":"Reverts","hidden":false},{"type":"feat","section":"Features","hidden":false},{"type":"fix","section":"Bug Fixes","hidden":false},{"type":"improvement","section":"Feature Improvements","hidden":false},{"type":"docs","section":"Docs","hidden":false},{"type":"ci","section":"CI","hidden":false},{"type":"chore","section":"Miscellaneous","hidden":false}]'
-    
+
       - name: Upload assets to a Release
         uses: meeDamian/github-release@v2.0.3
         with:
