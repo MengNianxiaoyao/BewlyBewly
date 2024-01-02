@@ -7,7 +7,7 @@
 * Please note that the version on Chrome Web Store & Edge Addons may not update as quickly
 * 本地安裝瀏覽器打開 chrome://extensions 頁面之後直接將下載完後的 extension.zip 拖入瀏覽器即可完成安裝
 
-### What's Changed?
+### Features
 
 feat: add a setting to use the original bilibili homepage
 feat: add compatibility page on settings panel
@@ -15,6 +15,8 @@ feat: add contributors section & export settings description to the about page o
 feat: implement reset content feature in dock
 feat: create ci build for action (@MengNianxiaoyao)
 feat: dock item visibility adjustment
+
+### Bug Fixes
 
 fix: resolve the issue of blurry font, i guess... (#49)
 fix: open History‘s article is error (@MengNianxiaoyao)
